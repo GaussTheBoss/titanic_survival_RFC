@@ -1,24 +1,49 @@
 # titanic
 
+A Model to predict likelihood of Survival on board the ill-fated Titanic.
 
-1. on-board model to MOC
-2. map functions.  init->begin, score->predict, metrics->metrics, train->train
+Model code contains scoring (prediction), metrics (accuracy), and training functions.
 
-use test.csv for a metrics job
-use predeict.csv for a scoring job
+## Scoring Jobs
 
+### Sample Inputs
 
-to test inference using the rest api:
+Choose the following file for a sample scoring job:
+ - `predict.csv`
+
+### Schema Checking
+
+Schema Checking is **unavailable** (no schemas exist for this model).
+
+### Sample Output
+
+The output of the scoring job when the input data is `predict.csv` is a JSONS file (one-line JSON records). Here are the first two output records:
+```json
+{"Ticket": 349248, "SibSp": 0, "Sex": "male", "Pclass": 3, "PassengerId": 871, "Parch": 0, "Name": "Balkic, Mr. Cerin", "Fare": 7.8958, "Embarked": "S", "Cabin": null, "Age": 26.0, "Prediction": 0}
+{"Ticket": 113781, "SibSp": 1, "Sex": "female", "Pclass": 1, "PassengerId": 499, "Parch": 2, "Name": "Allison, Mrs. Hudson J C (Bessie Waldo Daniels)", "Fare": 151.55, "Embarked": "S", "Cabin": "C22 C26", "Age": 25.0, "Prediction": 1}
 ```
-import requests
 
-inference = {'PassengerId': 519, 'Pclass': 2, 'Name': 'Bob', 'Sex': 'male', 'Age': 36, 'SibSp': 0,
-             'Parch':1,'Ticket': 226875, 'Fare': 26.0,'Cabin': 'C26', 'Embarked': 'S'}   
+## Metrics Jobs
 
-response = requests.post('{gateway-url}/{engine-name}/api/roundtrip/0/1', json=inference)
+Model code includes a metrics function used to compute accuracy.
 
-print("Status code: ", response.status_code)
-print("Printing Entire Post Request")
-print(response.json())
-```
+### Sample Inputs
 
+Choose the following file for a sample metrics job:
+ - `test.csv`
+
+
+## Training Jobs
+
+Model Code includes a training function used to train a model binary.
+
+### Sample Inputs
+
+Choose **one** of:
+ - `train.csv`
+ - `train.json`
+
+### Output Files
+
+In order to be able to download the pickle file that is written by the training function, add the following file as output to the training job:
+ - `RFC_model.pkl`

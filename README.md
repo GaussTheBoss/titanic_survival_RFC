@@ -1,6 +1,6 @@
-# titanic
+# titanic_survival_RFC
 
-A Model to predict likelihood of Survival on board the ill-fated Titanic.
+A Model (Random Forest Classifier) to predict likelihood of Survival on board the ill-fated Titanic.
 
 Model code contains scoring (prediction), metrics (accuracy), and training functions.
 
@@ -10,10 +10,6 @@ Model code contains scoring (prediction), metrics (accuracy), and training funct
 
 Choose the following file for a sample scoring job:
  - `predict.csv`
-
-### Schema Checking
-
-Schema Checking is **unavailable** (no schemas exist for this model).
 
 ### Sample Output
 
@@ -45,5 +41,4 @@ Choose **one** of:
 
 ### Output Files
 
-In order to be able to download the pickle file that is written by the training function, add the following file as output to the training job:
  - `RFC_model.pkl`

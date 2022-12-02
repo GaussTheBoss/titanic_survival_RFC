@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1pephnk" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="3.7.3">
+  <decision id="Decision_0vs7771" name="Decision 1">
+    <decisionTable id="decisionTable_1">
+      <input id="input_1" label="accuracy" camunda:inputVariable="ACCURACY">
+        <inputExpression id="inputExpression_1" typeRef="double" expressionLanguage="feel">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="output_1" label="passes" name="passes" typeRef="boolean" />
+      <output id="OutputClause_1nbnzlr" label="reason" name="reason" typeRef="string" />
+      <rule id="DecisionRule_0j80o9v">
+        <inputEntry id="UnaryTests_0z69fi2">
+          <text>&lt;= 0.8</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_194ns9j">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1y38bfc">
+          <text>"did not meet threshold"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1yz02ru">
+        <inputEntry id="UnaryTests_0b5pr5n">
+          <text>&gt; 0.8</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1e5952f">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pz8u5o">
+          <text>"met threshold"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

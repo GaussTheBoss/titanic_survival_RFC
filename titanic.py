@@ -1,5 +1,6 @@
 import pandas
 import numpy
+
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -10,7 +11,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level="INFO")
-
 
 # modelop.init
 def begin():

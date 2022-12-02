@@ -4,6 +4,29 @@ A Model (Random Forest Classifier) to predict likelihood of Survival on board th
 
 Model code contains scoring (prediction), metrics (accuracy), and training functions.
 
+## Running Locally
+
+To run this model locally, create a new Python 3.9.8 virtual environment
+(such as with `pyenv`). Then, use the following command to update `pip`
+and `setuptools`:
+
+```
+python3 -m pip install --upgrade setuptools
+python3 -m pip install --upgrade pip
+```
+
+And install the required libraries:
+
+```
+python3 -m pip install -r requirements.txt
+```
+
+The main source code is contained in `titanic.py`. To test all code at-once, run
+
+```
+python3 titanic.py
+```
+
 ## Scoring Jobs
 
 ### Sample Inputs
@@ -28,6 +51,11 @@ Model code includes a metrics function used to compute accuracy.
 Choose the following file for a sample metrics job:
  - `test.csv`
 
+### Sample Oututs
+The output of the metrics job when the input data is `test.csv` is the following JSON record:
+```json
+{"ACCURACY": 0.8111888111888111}
+```
 
 ## Training Jobs
 

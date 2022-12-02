@@ -1,3 +1,6 @@
+import pickle
+import logging
+
 import pandas
 import numpy
 
@@ -6,17 +9,21 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
-import pickle
-import logging
+
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level="INFO")
 
-# modelop.init
-def begin():
+
+def begin() -> None:
+    """
+    A function to load the trained model artifact (.pkl) as a global variable.
+    The model will be used by other functions to produce predictions.
+    The function also sets global variables for feature lists.
+    """
 
     global model
-    model = pickle.load(open("RFC_model.pkl", "rb"))
+    model = pickle.load(open("./binaries/RFC_model.pkl", "rb"))
     logger.info("'RFC_model.pkl' file loaded to global variable 'model'")
 
     global numeric_predictors, categorical_predictors, target_variable
@@ -26,33 +33,50 @@ def begin():
     logger.info("Variable roles assigned")
 
 
-# modelop.score
-def predict(scoring_data):
+def predict(scoring_data: dict) -> dict:
+    """
+    A function to predict Survival on Titanic, given passanger info.
+    Args:
+        data (dict): input dictionary to be scored, containing predictive features.
+    Returns:
+        (dict): Scored (predicted) input data.
+    """
 
-    scoring_data=pandas.DataFrame([scoring_data])
+    scoring_data = pandas.DataFrame([scoring_data])
 
     scoring_data["Prediction"] = model.predict(
         scoring_data[numeric_predictors + categorical_predictors]
     )
-    yield scoring_data.to_dict(orient="records")[0]
+    return scoring_data.to_dict(orient="records")[0]
 
 
-# modelop.metrics
-def metrics(metrics_df):
+def metrics(metrics_df: pandas.DataFrame) -> dict:
+    """
+    A function to compute Accuracy scored and labeled data.
+    Args:
+        data (pandas.DataFrame): Dataframe of passenger info, including ground truths, predictions.
+    Returns:
+        (dict): Model accuracy.
+    """
 
     logger.info("metrics_df is of shape: %s", metrics_df.shape)
 
     X_test = metrics_df.drop("Survived", axis=1)
     y_true = metrics_df["Survived"]
-    yield {
+    return {
         "ACCURACY": model.score(
             X_test[numeric_predictors + categorical_predictors], y_true
         )
     }
 
 
-# modelop.train
-def train(training_df):
+def train(training_df: pandas.DataFrame) -> None:
+    """
+    A function to train a random forest classifier on labeled titanic data. Function
+    does not return an output, but rather writes trained model to /binaries/.
+    Args:
+        data (pandas.DataFrame): Dataframe of passenger info, including ground truths.
+    """
 
     logger.info("train_df is of shape: %s", training_df.shape)
 
@@ -109,10 +133,25 @@ def train(training_df):
     logger.info("Fitting model")
     model.fit(X_train, y_train)
 
-    # pickle file should be written to outputDir/
-    logger.info("Model fitting complete. Writing 'RFC_model.pkl' to outputDir/")
-    with open("outputDir/RFC_model.pkl", "wb") as f:
+    # pickle file should be written to /binaries/
+    logger.info("Model fitting complete. Writing 'RFC_model.pkl' to ./binaries/")
+    with open("./binaries/RFC_model.pkl", "wb") as f:
         pickle.dump(model, f)
 
     logger.info("Training Job Complete!")
-    pass
+
+
+# Test Script
+if __name__ == "__main__":
+    # Load model
+    begin()
+
+    # Loading datasets to test functions
+    predict_data = pandas.read_csv("./data/predict.csv")
+    test_data = pandas.read_csv("./data/test.csv")
+    training_data = pandas.read_csv("./data/train.csv")
+
+    # Function calls
+    print(predict(predict_data.iloc[0]))
+    print(metrics(test_data))
+    train(training_data)
